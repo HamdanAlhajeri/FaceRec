@@ -1,0 +1,13 @@
+flask
+flask-cors
+opencv-python
+numpy
+matplotlib
+pillow
+deepface==0.0.75
+retina-face
+gdown
+fire
+keras
+tensorflow==2.10.0
+mtcnn

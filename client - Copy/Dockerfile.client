@@ -1,0 +1,16 @@
+FROM node:16-alpine
+
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy the rest of the client code
+COPY . .
+
+# Build the React app
+RUN npm run build
+
+# The build output will be mounted to nginx via a volume
+CMD ["echo", "Client build complete"] 

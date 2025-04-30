@@ -1,0 +1,44 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+    volumes:
+      - client-build:/app/build
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/input:/app/input
+      - ./backend/100060861:/app/100060861
+      - ./backend/100063264:/app/100063264
+      - ./backend/100063275:/app/100063275
+      - ./backend/faces.db:/app/faces.db
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:5000/ || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - client-build:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - client
+      - server
+    restart: unless-stopped
+
+volumes:
+  client-build:

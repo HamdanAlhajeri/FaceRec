@@ -1,0 +1,37 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    wget \
+    curl \
+    dnsutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy backend requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Create required directories
+RUN mkdir -p input \
+    && mkdir -p 100060861 \
+    && mkdir -p 100063264 \
+    && mkdir -p 100063275 \
+    && mkdir -p /root/.deepface/weights
+
+# Pre-download model weights
+RUN wget -P /root/.deepface/weights https://github.com/serengil/deepface_models/releases/download/v1.0/arcface_weights.h5 && \
+    wget -P /root/.deepface/weights https://github.com/serengil/deepface_models/releases/download/v1.0/retinaface.h5 && \
+    wget -P /root/.deepface/weights https://github.com/serengil/deepface_models/releases/download/v1.0/facial_expression_model_weights.h5
+
+# Copy backend code
+COPY . .
+
+# Expose port for backend
+EXPOSE 5000
+
+# Start the backend service
+CMD ["python", "server.py"] 

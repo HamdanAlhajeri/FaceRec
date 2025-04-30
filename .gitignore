@@ -4,3 +4,16 @@ backend/venv/*
 100060861
 backend/100060861/
 backend/100060861/*
+client - Copy/node_modules
+client - Copy/build
+client - Copy/package-lock.json
+client - Copy/yarn.lock
+client - Copy/yarn-error.log
+client - Copy/yarn-debug.log
+client - Copy/node_modules
+client - Copy/build
+client - Copy/package-lock.json
+client - Copy/yarn.lock
+client - Copy/yarn-error.log
+client - Copy/yarn-debug.log
+
